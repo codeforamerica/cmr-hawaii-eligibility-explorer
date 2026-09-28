@@ -37,7 +37,7 @@ module "content" {
   logging_bucket = local.logging_bucket
   sensitivity    = "public"
 
-  # The module's own key policy can't grant CloudFront's service principal, so
+  # The module's key policy can't grant CloudFront's service principal, so
   # the key is created in kms.tf instead. See templates/key-policy.yaml.tftpl.
   kms = {
     create = false

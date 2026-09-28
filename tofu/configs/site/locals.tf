@@ -1,7 +1,6 @@
 locals {
   # Mirrors the s3-bucket module's own naming so the bucket ARN can be built
-  # before the module is evaluated, breaking the bucket-policy dependency loop.
-  # clear-my-record-hi-development-eligibility-explorer
+  # before the module is evaluated
   bucket_name = join("-", compact([var.project, var.state, var.environment, var.application]))
 
   prefix = local.bucket_name
