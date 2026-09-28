@@ -1,0 +1,14 @@
+.idea/*
+
+# OpenTofu
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.hcl
+!*.auto.tfvars.example
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
