@@ -1,0 +1,13 @@
+# The bucket stays private and CloudFront reads it
+# with an Origin Access Control identity.
+- Sid: AllowCloudFrontRead
+  Effect: Allow
+  Principal:
+    Service: cloudfront.amazonaws.com
+  Action:
+    - s3:GetObject
+  Resource:
+    - "${bucket_arn}/*"
+  Condition:
+    StringEquals:
+      aws:SourceArn: "${distribution_arn}"
