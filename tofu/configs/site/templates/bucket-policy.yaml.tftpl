@@ -1,6 +1,5 @@
-# Merged into the s3-bucket module's own statements via
-# additional_policy_statements. The bucket stays private; CloudFront reads it
-# with an Origin Access Control identity, so this is the only read grant.
+# The bucket stays private and CloudFront reads it
+# with an Origin Access Control identity.
 - Sid: AllowCloudFrontRead
   Effect: Allow
   Principal:

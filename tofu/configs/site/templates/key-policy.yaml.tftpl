@@ -23,9 +23,6 @@ Statement:
         kms:EncryptionContext:aws:s3:arn:
           - "arn:${partition}:s3:::${bucket}"
           - "arn:${partition}:s3:::${bucket}/*"
-  # The reason this key is created here rather than by the s3-bucket module:
-  # that module's key policy can only grant AWS account principals, and Origin
-  # Access Control needs the CloudFront service principal to decrypt objects.
   - Sid: Allow CloudFront to decrypt bucket objects
     Effect: Allow
     Principal:
