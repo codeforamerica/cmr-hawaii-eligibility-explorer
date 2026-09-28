@@ -51,11 +51,6 @@ resource "aws_cloudfront_response_headers_policy" "site" {
   }
 }
 
-# CloudFront access logging is deliberately not configured here. The legacy
-# logging_config block writes via ACLs, which the log bucket from
-# tofu-modules-aws-logging rejects (it enforces BucketOwnerEnforced). The
-# replacement is the CloudWatch Logs delivery API; see "Access logging" in the
-# README before enabling it.
 #trivy:ignore:AVD-AWS-0010
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
@@ -66,8 +61,6 @@ resource "aws_cloudfront_distribution" "site" {
   default_root_object = "index.html"
   web_acl_id          = var.enable_waf ? aws_wafv2_web_acl.site["this"].arn : null
 
-  # Regional endpoint rather than the module's bucket_domain_name output, so
-  # OAC signs against the same host S3 answers on without a redirect.
   origin {
     domain_name              = "${module.content.name}.s3.us-east-1.amazonaws.com"
     origin_id                = local.prefix
@@ -82,14 +75,10 @@ resource "aws_cloudfront_distribution" "site" {
 
     viewer_protocol_policy = "redirect-to-https"
 
-    # CachingOptimized. The site takes no query strings, cookies, or headers,
-    # so the AWS managed policy is a better fit than a custom one.
     cache_policy_id            = "658327ea-f89d-4fab-a63d-7e88639e58f6"
     response_headers_policy_id = aws_cloudfront_response_headers_policy.site.id
   }
 
-  # Any path other than / is a typo or a probe; send it to the one page there
-  # is rather than exposing an S3 error document.
   custom_error_response {
     error_code            = 403
     response_code         = 200
